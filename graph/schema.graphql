@@ -1,0 +1,16 @@
+enum UserType {
+  ADMIN
+  GUEST
+}
+
+type User {
+  type: UserType!
+}
+
+input NewUser {
+  type: UserType! = GUEST
+}
+
+type Mutation {
+  createUser(input: NewUser! = { type: GUEST } ): User!
+}
