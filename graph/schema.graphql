@@ -4,13 +4,13 @@ enum UserType {
 }
 
 type User {
-  type: UserType!
+  type: UserType
 }
 
 input NewUser {
-  type: UserType! = GUEST
+  type: UserType = GUEST
 }
 
 type Mutation {
-  createUser(input: NewUser! = { type: GUEST } ): User!
+  createUser(input: NewUser = { type: GUEST } ): User
 }

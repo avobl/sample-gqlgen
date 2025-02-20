@@ -48,7 +48,7 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateUser func(childComplexity int, input model.NewUser) int
+		CreateUser func(childComplexity int, input *model.NewUser) int
 	}
 
 	Query struct {
@@ -60,7 +60,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateUser(ctx context.Context, input model.NewUser) (*model.User, error)
+	CreateUser(ctx context.Context, input *model.NewUser) (*model.User, error)
 }
 
 type executableSchema struct {
@@ -92,7 +92,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(model.NewUser)), true
+		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(*model.NewUser)), true
 
 	case "User.type":
 		if e.complexity.User.Type == nil {
@@ -239,13 +239,13 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 func (ec *executionContext) field_Mutation_createUser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (model.NewUser, error) {
+) (*model.NewUser, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNNewUser2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐNewUser(ctx, tmp)
+		return ec.unmarshalONewUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐNewUser(ctx, tmp)
 	}
 
-	var zeroVal model.NewUser
+	var zeroVal *model.NewUser
 	return zeroVal, nil
 }
 
@@ -386,21 +386,18 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateUser(rctx, fc.Args["input"].(model.NewUser))
+		return ec.resolvers.Mutation().CreateUser(rctx, fc.Args["input"].(*model.NewUser))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -583,14 +580,11 @@ func (ec *executionContext) _User_type(ctx context.Context, field graphql.Collec
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(model1.UserType)
+	res := resTmp.(*model1.UserType)
 	fc.Result = res
-	return ec.marshalNUserType2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx, field.Selections, res)
+	return ec.marshalOUserType2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_type(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2577,7 +2571,7 @@ func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, obj any) 
 		switch k {
 		case "type":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalNUserType2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx, v)
+			data, err := ec.unmarshalOUserType2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2619,9 +2613,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createUser(ctx, field)
 			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2708,9 +2699,6 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = graphql.MarshalString("User")
 		case "type":
 			out.Values[i] = ec._User_type(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3084,11 +3072,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐNewUser(ctx context.Context, v any) (model.NewUser, error) {
-	res, err := ec.unmarshalInputNewUser(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v any) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3102,30 +3085,6 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) marshalNUser2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
-	return ec._User(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._User(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNUserType2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx context.Context, v any) (model1.UserType, error) {
-	var res model1.UserType
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNUserType2githubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx context.Context, sel ast.SelectionSet, v model1.UserType) graphql.Marshaler {
-	return v
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -3407,6 +3366,14 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) unmarshalONewUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐNewUser(ctx context.Context, v any) (*model.NewUser, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNewUser(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v any) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -3421,6 +3388,29 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	}
 	res := graphql.MarshalString(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._User(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOUserType2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx context.Context, v any) (*model1.UserType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(model1.UserType)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOUserType2ᚖgithubᚗcomᚋavoblᚋsampleᚑgqlgenᚋinternalᚋmodelᚐUserType(ctx context.Context, sel ast.SelectionSet, v *model1.UserType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

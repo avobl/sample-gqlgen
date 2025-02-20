@@ -10,12 +10,12 @@ type Mutation struct {
 }
 
 type NewUser struct {
-	Type model.UserType `json:"type"`
+	Type *model.UserType `json:"type,omitempty"`
 }
 
 type Query struct {
 }
 
 type User struct {
-	Type model.UserType `json:"type"`
+	Type *model.UserType `json:"type,omitempty"`
 }

@@ -12,7 +12,7 @@ import (
 )
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input *model.NewUser) (*model.User, error) {
 	log.Printf("CreateUser: %+v", input)
 
 	return &model.User{
